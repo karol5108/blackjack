@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" th:href="@{/style.css}" />
+    <title>Blackjack Game</title>
+</head>
+
+<body>
+<div th:insert="~{/navbar :: navbar}"></div>
+</body>
+<body class="game-body">
+<div class="game-section">
+    <div class="player-section">
+        <h2>Hustler Cards:</h2>
+            <div class="card-container">
+                <div th:each="card, stat : ${hustlerCards}" class="card" th:classappend="${!gameFinished && stat.index == 1 ? 'hidden' : ''}">
+                <img th:src="@{/__${card.image}__}" alt="Card Image" class="card-image" />
+                </div>
+            </div>
+        <p th:text="'Hustler Result: ' + ${hustlerCardsValue}"></p>
+    </div>
+    <div class="player-section">
+        <h2>Player Cards:</h2>
+            <div class="card-container">
+                <div th:each="card : ${playerCards}" class="card">
+                <img th:src="@{/__${card.image}__}" alt="Card Image" class="card-image" />
+                </div>
+            </div>
+            <p th:text="'Player Result: ' + ${playerCardsValue}"></p>
+            </div>
+        </div>
+        <div class="game-controls">
+        <form th:action="@{/get-one-player}" method="post">
+            <button class="button green" button type="submit"> HIT </button>
+        </form>
+        <form th:action="@{/finish-game}" method="post">
+            <button class="button red" type="submit"> STAY </button>
+        </form>
+        <form th:action="@{/new-game}" method="post">
+            <button class="button white" type="submit">NEW GAME</button>
+        </form>
+        </div>
+<!-- Dodaj pozostałe elementy gry w tej sekcji -->
+
+</body>
+</html>

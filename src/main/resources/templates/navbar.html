@@ -1,0 +1,26 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" th:href="@{/style.css}" />
+    <link href='https://unpkg.com/boxicons@2.1.4/css/boxicons.min.css' rel='stylesheet'>
+
+</head>
+<body class="navbar-body">
+    <header class="header" th:fragment="navbar">
+        <img class="navbar-logo" th:src="@{/logo.png}"/>
+        <nav class="navbar">
+            <a th:href="@{/}">HOME</a>
+            <!-- Sprawdź, czy loggedIn nie jest nullem i czy jest fałszywe -->
+            <a th:if="${loggedIn == null or not loggedIn}" th:href="@{/login}">LOGIN</a>
+            <a th:if="${loggedIn == null or not loggedIn}" th:href="@{/}">REGISTER</a>
+
+            <!-- Sprawdź, czy loggedIn nie jest nullem i czy jest prawdziwe -->
+            <a th:if="${loggedIn != null and loggedIn}" th:href="@{/start}">NEW GAME</a>
+            <a th:if="${loggedIn != null and loggedIn}" th:href="@{/logout}">LOGOUT</a>
+
+        </nav>
+    </header>
+</body>
