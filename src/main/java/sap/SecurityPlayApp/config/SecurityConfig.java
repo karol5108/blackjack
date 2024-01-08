@@ -30,19 +30,18 @@ public class SecurityConfig {
                         .requestMatchers("/login").permitAll()
                         .requestMatchers("/register").permitAll()
                         .requestMatchers("/").permitAll()
-
+                        /// permits for templates
                         .requestMatchers("/style.css").permitAll()
-
                         .requestMatchers("/tittle.png").permitAll()
                         .requestMatchers("/bj.png").permitAll()
                         .requestMatchers("/bg.png").permitAll()
                         .requestMatchers("/logo.png").permitAll()
-                        .requestMatchers("/finish-game").permitAll()
-
-                        .requestMatchers("/start").permitAll()
+                        /// permits for game actions
+                        .requestMatchers("/start").hasRole("USER")
                         .requestMatchers("/get-one-player").hasRole("USER")
-                        .requestMatchers("/get-one-hustler").hasRole("USER")
-
+                        .requestMatchers("/new-game").hasRole("USER")
+                        .requestMatchers("/finish-game").hasRole("USER")
+                        /// permits for admin
                         .requestMatchers("/users").hasRole("ADMIN")
                         .requestMatchers("/h2-console/**").hasRole("ADMIN")
 
