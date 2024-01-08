@@ -30,8 +30,9 @@ public class SecurityConfig {
                         .requestMatchers("/login").permitAll()
                         .requestMatchers("/register").permitAll()
                         .requestMatchers("/").permitAll()
+
                         .requestMatchers("/style.css").permitAll()
-                        .requestMatchers("/navbar.html").permitAll()
+
                         .requestMatchers("/tittle.png").permitAll()
                         .requestMatchers("/bj.png").permitAll()
                         .requestMatchers("/bg.png").permitAll()

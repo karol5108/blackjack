@@ -66,7 +66,7 @@ public class BlackJackController {
     }
     @PostMapping("/get-one-player")
     public String getOnePlayer(Model model){
-
+        model.addAttribute("loggedIn", true);
         if(!blackJack.isStayButtonClicked()){
             blackJack.getOne();
             model.addAttribute("playerCards", blackJack.getPlayer().getCardsInHand());
@@ -88,6 +88,7 @@ public class BlackJackController {
     }
     @PostMapping("/finish-game")
     public String finishGame(Model model) {
+        model.addAttribute("loggedIn", true);
         if(!blackJack.isStayButtonClicked()){
             blackJack.getOneHustler();
             if (blackJack.getHustler().getResult() < 18){
@@ -99,6 +100,7 @@ public class BlackJackController {
             model.addAttribute("gameFinished", true);
             model.addAttribute("playerCardsValue", blackJack.getPlayer().getResult());
             model.addAttribute("hustlerCardsValue", blackJack.getHustler().getResult());// Dodaj informację o zakończeniu gry
+
             blackJack.finishGame();
         }
         return "blackjack";
@@ -113,6 +115,7 @@ public class BlackJackController {
             model.addAttribute("hustlerCards", blackJack.getHustler().getCardsInHand());
             model.addAttribute("playerCardsValue", blackJack.getPlayer().getResult());
             model.addAttribute("hustlerCardsValue", (blackJack.getHustler().getResult() - blackJack.getHustler().getCardsInHand().get(1).getValue()));
+            model.addAttribute("loggedIn", true);
             model.addAttribute("gameFinished", false);
 
 

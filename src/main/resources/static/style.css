@@ -43,7 +43,7 @@
      background: url('bj.png');
      backdrop-filter: blur(5px);
      background-size: cover;
-     background-position: center;
+     background-position: top;
      background-repeat: no-repeat;
      color: #fff;
      -webkit-text-stroke: 0.2px black;
@@ -92,62 +92,63 @@
 
 /* tittle page styles */
 
-.container {
-    position: relative;
-    height: 100vh; /* 100% wysokości widocznego obszaru */
-    display: flex;
-    align-items: center;
-    justify-content: center;
-   flex-direction: column;
-}
 
-.background-image {
-    width: 100vw; /* 100% szerokości widocznego obszaru */
-    height: auto;
-    display: block;
-    position: absolute;
-    top: 0;
-    left: 0;
-}
-
-.content {
-    position: absolute;
-    top: 10%;
-    left: 50%;
-    transform: translate(-50%, -50%);
-    text-align: center;
-    width: 100%;
-    box-sizing: border-box;
-    padding: 20px;
-}
-
-.buttons {
-    display: flex;
-    justify-content: center;
-    margin-top: 20px; /* Margines od górnej krawędzi */
-}
-
-.buttons button {
-    padding: 15px 30px; /* Dostosuj rozmiar przycisków */
-    font-size: 18px;
-    cursor: pointer;
-    margin: 0 10px; /* Odległość między przyciskami */
-}
 .tittle-body{
     flex-direction: column;
          display: flex;
-         justify-content: center;
-         align-items: center;
+         justify-content: left;
+         align-items: left;
+         margin-top: 75px;
+         margin-left:25px;
          min-height: 100vh;
+         max-height: 100vh;
          background: url('bj.png');
          background-size: cover;
-         background-position: center;
+         background-position: bottom ;
          background-repeat: no-repeat;
          color: #fff;
          -webkit-text-stroke: 0.2px black;
          text-shadow: -1px 1px 20px rgba(0, 0, 0, 1);
          height: 100%;
 }
+.tittle-content{
+   width: 1200px;
+   color: #fff;
+   position: relative;
+   padding-left:25px;
+}
+.tittle-content .tittle-p{
+    font-family: "Marhey";
+    letter-spacing: 1.2 px;
+    line-height: 30px;
+}
+.tittle-content h1{
+    font-size: 50px;
+
+    letter-spacing: 2.5px;
+
+}
+.tittle-content h1 span{
+    font-size:40px;
+    font-family: "Marhey";
+}
+.tittle-content .tittle-btn{
+   width: 100px;
+   height: 100px;
+   background-color: transparent;
+   border: none;
+   margin-bottom: 10px;
+   margin-left: 250px;
+   font-size: 30px;
+   font-family: "Marhey";
+    color: #fff;
+   border-radius: 50%
+}
+.tittle-btn:hover{
+    background-color: rgba(255, 0, 0, 0.3);;
+    color: #fff;
+}
+
 
 /* login and register page styles */
 
@@ -226,6 +227,7 @@
     text-align: center;
 
 }
+/*navbar styles */
 .navbar-body{
     margin:0;
     padding:0;
@@ -255,6 +257,7 @@
     font-weight: 500;
     text-decoration: none;
     margin-left: 40px;
+    margin-right: 40px;
 }
 .navbar a::before{
     content:'';
