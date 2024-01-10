@@ -22,6 +22,47 @@
             </div>
         <p th:text="'Hustler Result: ' + ${hustlerCardsValue}"></p>
     </div>
+
+    <div class="history-box">
+<!--        <th:block th:each="result : ${history}">-->
+<!--            <th:with var="color" th:if="${result == 'P'} ? 'green' : (${result == 'H'} ? 'red' : 'white')"></th:with>-->
+<!--            <div class="result" th:style="'background-color: ' + ${color}">-->
+<!--                <span th:text="${result}"></span>-->
+<!--            </div>-->
+<!--        </th:block>-->
+<!--        druga wersja-->
+        <div th:class="${history.size() > 9 ? history[9] : 'D'}">
+            <span th:text="${history.size() > 9 ? history[9] : ''}"></span>
+        </div>
+        <div th:class="${history.size() > 8 ? history[8] : 'D'}">
+            <span th:text="${history.size() > 8 ? history[8] : ''}"></span>
+        </div>
+        <div th:class="${history.size() > 7 ? history[7] : 'D'}">
+            <span th:text="${history.size() > 7 ? history[7] : ''}"></span>
+        </div>
+        <div th:class="${history.size() > 6 ? history[6] : 'D'}">
+            <span th:text="${history.size() > 6 ? history[6] : ''}"></span>
+        </div>
+        <div th:class="${history.size() > 5 ? history[5] : 'D'}">
+            <span th:text="${history.size() > 5 ? history[5] : ''}"></span>
+        </div>
+        <div th:class="${history.size() > 4 ? history[4] : 'D'}">
+            <span th:text="${history.size() > 4 ? history[4] : ''}"></span>
+        </div>
+        <div th:class="${history.size() > 3 ? history[3] : 'D'}">
+            <span th:text="${history.size() > 3 ? history[3] : ''}"></span>
+        </div>
+        <div th:class="${history.size() > 2 ? history[2] : 'D'}">
+            <span th:text="${history.size() > 2 ? history[2] : ''}"></span>
+        </div>
+        <div th:class="${history.size() > 1 ? history[1] : 'D'}">
+            <span th:text="${history.size() > 1 ? history[1] : ''}"></span>
+        </div>
+        <div th:class="${history.size() > 0 ? history[0] : 'D'}">
+            <span th:text="${history.size() > 0 ? history[0] : ''}"></span>
+        </div>
+    </div>
+
     <div class="player-section">
         <h2>Player Cards:</h2>
             <div class="card-container">
@@ -30,6 +71,7 @@
                 </div>
             </div>
             <p th:text="'Player Result: ' + ${playerCardsValue}"></p>
+
             </div>
         </div>
         <div class="game-controls">

@@ -22,13 +22,13 @@ public class BlackJackController {
     private PlayerBJ hustler;
 
     @GetMapping("/login")
-    public String test(){
+    public String test() {
         return "login";
     }
 
 
     @GetMapping
-    public String tittlePage(Authentication authentication,Model model){
+    public String tittlePage(Authentication authentication, Model model) {
         if (authentication != null && authentication.isAuthenticated()) {
             model.addAttribute("loggedIn", true);
             model.addAttribute("username", authentication.getName());
@@ -39,22 +39,21 @@ public class BlackJackController {
     }
 
     @GetMapping("/start")
-    public String startGame(Model model){
+    public String startGame(Model model) {
 
-            deck = new Deck();
-            player = new PlayerBJ();
-            hustler = new PlayerBJ();
+        deck = new Deck();
+        player = new PlayerBJ();
+        hustler = new PlayerBJ();
 
-            blackJack = new BlackJack();
-            blackJack.setDeck(deck);
-            blackJack.setPlayer(player);
-            blackJack.setHustler(hustler);
+        blackJack = new BlackJack();
+        blackJack.setDeck(deck);
+        blackJack.setPlayer(player);
+        blackJack.setHustler(hustler);
 
-            blackJack.startGame();
-            //blackJack.getOne();
-            //blackJack.getOneHustler();
-            System.out.println( blackJack.checkWinner());
+        blackJack.startGame();
 
+        System.out.println(blackJack.checkWinner());
+        model.addAttribute("history", blackJack.getGameHistory());
         model.addAttribute("playerCards", blackJack.getPlayer().getCardsInHand());
         model.addAttribute("hustlerCards", blackJack.getHustler().getCardsInHand());
         model.addAttribute("playerCardsValue", blackJack.getPlayer().getResult());
@@ -64,21 +63,25 @@ public class BlackJackController {
 
         return "blackjack";
     }
+
     @PostMapping("/get-one-player")
-    public String getOnePlayer(Model model){
+    public String getOnePlayer(Model model) {
         model.addAttribute("loggedIn", true);
-        if(!blackJack.isStayButtonClicked()){
+        model.addAttribute("history", blackJack.getGameHistory());
+        if (!blackJack.isStayButtonClicked()) {
             blackJack.getOne();
             model.addAttribute("playerCards", blackJack.getPlayer().getCardsInHand());
             model.addAttribute("hustlerCards", blackJack.getHustler().getCardsInHand());
-            if(blackJack.getPlayer().getResult() > 21){
-                model.addAttribute("winner", blackJack.checkWinner());
+            if (blackJack.getPlayer().getResult() > 21) {
+                String winner = blackJack.checkWinner();
+                blackJack.addToGameHistory(blackJack.checkWinner());
                 model.addAttribute("gameFinished", true);
                 model.addAttribute("playerCardsValue", blackJack.getPlayer().getResult());
                 model.addAttribute("hustlerCardsValue", blackJack.getHustler().getResult());// Dodaj informację o zakończeniu gry
                 blackJack.finishGame();
                 blackJack.setStayButtonClicked(true);
-            }else {
+            } else {
+                model.addAttribute("history", blackJack.getGameHistory());
                 model.addAttribute("gameFinished", false);
                 model.addAttribute("playerCardsValue", blackJack.getPlayer().getResult());
                 model.addAttribute("hustlerCardsValue", (blackJack.getHustler().getResult() - blackJack.getHustler().getCardsInHand().get(1).getValue()));
@@ -86,37 +89,47 @@ public class BlackJackController {
         }
         return "blackjack";
     }
+
     @PostMapping("/finish-game")
     public String finishGame(Model model) {
         model.addAttribute("loggedIn", true);
-        if(!blackJack.isStayButtonClicked()){
+        if (!blackJack.isStayButtonClicked()) {
             blackJack.getOneHustler();
-            if (blackJack.getHustler().getResult() < 18){
+            if (blackJack.getHustler().getResult() < 18) {
                 blackJack.getOneHustler();
             }
+
+            blackJack.addToGameHistory(blackJack.checkWinner());
+            model.addAttribute("history", blackJack.getGameHistory());
+
             model.addAttribute("playerCards", blackJack.getPlayer().getCardsInHand());
             model.addAttribute("hustlerCards", blackJack.getHustler().getCardsInHand());
-            model.addAttribute("winner", blackJack.checkWinner());
             model.addAttribute("gameFinished", true);
             model.addAttribute("playerCardsValue", blackJack.getPlayer().getResult());
             model.addAttribute("hustlerCardsValue", blackJack.getHustler().getResult());// Dodaj informację o zakończeniu gry
 
             blackJack.finishGame();
+        }else{
+            model.addAttribute("history", blackJack.getGameHistory());
         }
         return "blackjack";
     }
+
     @PostMapping("/new-game")
-    public String newGame(Model model){
-        if(blackJack.isStayButtonClicked()) {
+    public String newGame(Model model) {
+        if (blackJack.isStayButtonClicked()) {
             deck.shuffle();
             blackJack.startGame();
+            model.addAttribute("history", blackJack.getGameHistory());
         }
-            model.addAttribute("playerCards", blackJack.getPlayer().getCardsInHand());
-            model.addAttribute("hustlerCards", blackJack.getHustler().getCardsInHand());
-            model.addAttribute("playerCardsValue", blackJack.getPlayer().getResult());
-            model.addAttribute("hustlerCardsValue", (blackJack.getHustler().getResult() - blackJack.getHustler().getCardsInHand().get(1).getValue()));
-            model.addAttribute("loggedIn", true);
-            model.addAttribute("gameFinished", false);
+        model.addAttribute("history", blackJack.getGameHistory());
+        model.addAttribute("playerCards", blackJack.getPlayer().getCardsInHand());
+        model.addAttribute("hustlerCards", blackJack.getHustler().getCardsInHand());
+        model.addAttribute("playerCardsValue", blackJack.getPlayer().getResult());
+        model.addAttribute("hustlerCardsValue", (blackJack.getHustler().getResult() - blackJack.getHustler().getCardsInHand().get(1).getValue()));
+        model.addAttribute("loggedIn", true);
+        model.addAttribute("gameFinished", false);
+
 
 
         return "blackjack";
