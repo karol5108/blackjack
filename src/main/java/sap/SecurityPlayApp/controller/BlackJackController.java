@@ -26,6 +26,11 @@ public class BlackJackController {
         return "login";
     }
 
+    @GetMapping("/loginGithub")
+    public String loginGithub() {
+        return "loginGithub";
+    }
+
 
     @GetMapping
     public String tittlePage(Authentication authentication, Model model) {
