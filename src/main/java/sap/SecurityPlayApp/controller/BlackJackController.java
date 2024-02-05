@@ -46,7 +46,7 @@ public class BlackJackController {
     @GetMapping("/start")
     public String startGame(Model model) {
 
-        deck = new Deck();
+        deck = new Deck("bj");
         player = new PlayerBJ();
         hustler = new PlayerBJ();
 

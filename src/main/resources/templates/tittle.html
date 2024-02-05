@@ -12,8 +12,9 @@
 <div th:insert="~{/navbar :: navbar}"></div>
 </body>
 <body CLASS="tittle-body">
+
     <div class="tittle-content">
-        <h1>SPRING WEB API  <br><span>Black Jack Game</span></h1>
+        <h1><span>Black Jack Game</span></h1>
         <p class="tittle-p">Lorem ipsum dolor sit amet, consectetur adipiscing elit.
                             <br> Integer nec odio. Praesent libero.
                             <br>Sed cursus ante dapibus diam. Sed nisi.
@@ -24,8 +25,21 @@
         <form th:action="@{/start}" method="get">
         <button th:if="${loggedIn != null and loggedIn}" class="tittle-btn"> START </button>
         </form>
-        <form th:action="@{/login}" method="get">
-        <button th:if="${loggedIn == null or not loggedIn}" class="tittle-btn"> LOGIN </button>
+
+    </div>
+
+    <div class="tittle-content">
+        <h1><span>Poker Game</span></h1>
+        <p class="tittle-p">Lorem ipsum dolor sit amet, consectetur adipiscing elit.
+            <br> Integer nec odio. Praesent libero.
+            <br>Sed cursus ante dapibus diam. Sed nisi.
+            <br> Nulla quis sem at nibh elementum imperdiet.
+            <br> Duis sagittis ipsum. Praesent mauris.
+            <br> Fusce nec tellus sed augue.
+        </p>
+        <form th:action="@{/start-poker}" method="get">
+            <button th:if="${loggedIn != null and loggedIn}" class="tittle-btn"> START </button>
         </form>
+
     </div>
 </body>

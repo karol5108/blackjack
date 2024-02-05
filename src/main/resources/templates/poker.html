@@ -1,0 +1,181 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" th:href="@{/style.css}"/>
+    <link rel="stylesheet" th:href="@{/style_poker.css}"/>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css"/>
+    <title>Poker Game</title>
+</head>
+<body class="body-poker">
+<div th:insert="~{/navbar :: navbar}"></div>
+<!--</body>-->
+<!--<body class="body-poker">-->
+<div class="game-section-poker">
+
+    <div class="poker-player-section">
+        <h2> HUSTLER: </h2>
+        <h1 th:text="'Bet: ' + ${betHustler}"></h1>
+
+        <div class="poker-cards-player">
+            <div th:if="${!gameFinished}"
+                 th:each="card, stat : ${hustlerCards}" class="card-poker">
+                <img th:src="back.png" alt="Card Image"
+                     class="card-image"/>
+            </div>
+            <div    th:if="${gameFinished}"
+                    th:each="card, stat : ${hustlerCards}" class="card-poker">
+                <img th:src="@{/__${card.image}__}" alt="Card Image"
+                     class="card-image"/>
+            </div>
+        </div>
+        <h1 th:text="'Credits: ' + ${creditsHustler}"></h1>
+    </div>
+
+</div>
+</div>
+
+<div class="poker-player-section">
+
+    <div class="poker-cards-player">
+        <div th:if="${cardsOnTable == null or #lists.isEmpty(cardsOnTable)}" class="card-poker"
+             th:each="i : ${#numbers.sequence(1, 5)}">
+            <img th:src="back.png" alt="Card Image" class="card-image"/>
+        </div>
+
+        <div th:if="${#lists.size(cardsOnTable) == 3}" class="card-poker"
+             th:each="card, i : ${cardsOnTable}">
+            <img th:src="@{/__${card.image}__}" alt="Card Image" class="card-image"/>
+        </div>
+        <div th:if="${#lists.size(cardsOnTable) == 3}" class="card-poker"
+             th:each="card, i : ${#numbers.sequence(1, 2)}">
+            <img th:src="back.png" alt="Card Image" class="card-image"/>
+        </div>
+
+        <div th:if="${#lists.size(cardsOnTable) == 4}" class="card-poker"
+             th:each="card, i : ${cardsOnTable}">
+            <img th:src="@{/__${card.image}__}" alt="Card Image" class="card-image"/>
+        </div>
+        <div th:if="${#lists.size(cardsOnTable) == 4}" class="card-poker"
+             th:each="card, i : ${#numbers.sequence(1, 1)}">
+            <img th:src="back.png" alt="Card Image" class="card-image"/>
+        </div>
+
+        <div th:if="${#lists.size(cardsOnTable) == 5}" class="card-poker"
+             th:each="card, i : ${cardsOnTable}">
+            <img th:src="@{/__${card.image}__}" alt="Card Image" class="card-image"/>
+        </div>
+
+    </div>
+    <h1 th:text="'Pot: ' + ${moneyOnTable}"></h1>
+</div>
+
+<div class="poker-controls">
+    <form th:action="@{/check}" method="get">
+        <button class="button green" button type="submit"> CHECK</button>
+    </form>
+    <form th:action="@{/rise}" method="get">
+        <button class="button red" type="submit"> RISE +10</button>
+    </form>
+    <form th:action="@{/riseX2}" method="get">
+        <button class="button white" type="submit"> RISE X2 </button>
+    </form>
+    <form th:action="@{/riseCustom}" method="get">
+        <div class="input-group">
+            <input type="number" name="customBet" id="customBet" class="form-control" min="${currentBetHustler}" max="100" th:value="${currentBetHustler}" />
+        </div>
+
+        <!-- Przycisk do potwierdzenia zakładu -->
+        <button class="button white" type="submit">Rise Custom Bet</button>
+    </form>
+    <form th:action="@{/fold}" method="get">
+        <button class="button white" type="submit"> FOLD</button>
+    </form>
+
+    <script>
+    // Funkcja do zwiększania zakładu
+    function increaseBet() {
+        var inputElement = document.getElementById('customBet');
+        var currentBet = parseInt(inputElement.value);
+        var maxBet = parseInt(inputElement.getAttribute('max'));
+
+        if (currentBet < maxBet) {
+            inputElement.value = currentBet + 1;
+        }
+    }
+
+    // Funkcja do zmniejszania zakładu
+    function decreaseBet() {
+        var inputElement = document.getElementById('customBet');
+        var currentBet = parseInt(inputElement.value);
+        var minBet = parseInt(inputElement.getAttribute('min'));
+
+        if (currentBet > minBet) {
+            inputElement.value = currentBet - 1;
+        }
+    }
+</script>
+
+</div>
+</div>
+
+<div class="poker-player-section">
+    <h2> PLAYER: </h2>
+    <h1 th:text="'Bet: ' + ${betPlayer}"></h1>
+
+    <div class="poker-cards-player">
+        <div th:each="card, stat : ${playerCards}" class="card-poker">
+            <img th:src="@{/__${card.image}__}" alt="Card Image" class="card-image"/>
+        </div>
+    </div>
+    <h1 th:text="'Credits: ' + ${creditsPlayer}"></h1>
+</div>
+
+</div>
+
+<div class="container mt-5">
+    <!-- Warunek sprawdzający, czy modal powinien być wyświetlony -->
+    <div th:if="${gameFinished}">
+        <!-- Modal -->
+        <div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+            <div class="modal-dialog">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h5 class="modal-title" id="exampleModalLabel" th:text="'WINNER IS ' + ${winner}"></h5>
+                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                    </div>
+                    <div class="modal-body">
+                        <div class="poker-cards-player">
+                            <div th:each="card, stat : ${winningCards}" class="card-end-game">
+                                <img th:src="@{/__${card.image}__}" alt="Card Image" class="card-image"/>
+                            </div>
+
+                    <div class="modal-footer">
+                        <form th:action="@{/new-game}" method="get">
+                            <button  class="btn btn-primary" type="submit"> NEW GAME </button>
+                        </form>
+                        <form th:action="@{/}" method="get">
+                            <button  class="btn btn-success" type="submit"> HOME </button>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <!-- Skrypt JavaScript do automatycznego wyświetlania modala po załadowaniu strony -->
+        <script th:inline="javascript">
+            document.addEventListener('DOMContentLoaded', function () {
+                var gameFinished = /*[[${gameFinished}]]*/ false; // wartość przekazana z kontrolera
+                if (gameFinished) {
+                    var myModal = new bootstrap.Modal(document.getElementById('exampleModal'));
+                    myModal.show();
+                }
+            });
+        </script>
+    </div>
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+
+</body>
+
+</html>

@@ -1,0 +1,68 @@
+.game-section-poker {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-direction: column;
+}
+.body-poker {
+    flex-direction: column;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    min-height: 100vh;
+    background: url('poker_table.png');
+    backdrop-filter: blur(5px);
+    background-size: 100% 100%; /* Ustaw obraz na 100% szerokości i 100% wysokości */
+    background-position: top;
+    background-repeat: no-repeat;
+    color: #fff;
+    -webkit-text-stroke: 0.2px black;
+    text-shadow: -1px 1px 20px rgba(0, 0, 0, 1);
+    height: 100%;
+    overflow: hidden; /* Ukrycie przewijania */
+}
+
+.poker-cards-player {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-wrap: wrap;
+    gap: 10px;
+}
+.poker-player-section{
+      display: flex;
+          align-items: center;
+          justify-content: center;
+          flex-direction: row;
+          gap: 20px; /* Dodaj margines między przyciskami */
+          text-align: center; /* Dodaj tekst na środku */
+          text-shadow: -1px 1px 20px rgba(0, 0, 0, 1);
+}
+
+.card-poker {
+    width: 120px;  /* Dostosuj szerokość karty */
+    height: 200px; /* Dostosuj wysokość karty */
+    margin: 5px;
+}
+.card-end-game{
+    width: 60px;  /* Dostosuj szerokość karty */
+    height: 90px; /* Dostosuj wysokość karty */
+    margin: 5px;
+}
+.card-end-game img{
+   max-width: 60px;
+   max-height: 90px;
+}
+.card-poker img {
+    max-width: 120px;
+    max-height: 200px;
+}
+.poker-controls {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-direction: row;
+    gap: 20px; /* Dodaj margines między przyciskami */
+    text-align: center; /* Dodaj tekst na środku */
+    text-shadow: -1px 1px 20px rgba(0, 0, 0, 1);
+}

@@ -18,7 +18,8 @@
             <a th:if="${loggedIn == null or not loggedIn}" th:href="@{/}">REGISTER</a>
 
             <!-- Sprawdź, czy loggedIn nie jest nullem i czy jest prawdziwe -->
-            <a th:if="${loggedIn != null and loggedIn}" th:href="@{/start}">START</a>
+            <a th:if="${loggedIn != null and loggedIn}" th:href="@{/start}">START BLACKJACK</a>
+            <a th:if="${loggedIn != null and loggedIn}" th:href="@{/start-poker}">START POKER</a>
             <a th:if="${loggedIn != null and loggedIn}" th:href="@{/logout}">LOGOUT</a>
 
         </nav>

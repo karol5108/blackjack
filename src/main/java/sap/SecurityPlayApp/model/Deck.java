@@ -1,6 +1,7 @@
 package sap.SecurityPlayApp.model;
 
 import jakarta.persistence.Entity;
+import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.Setter;
 import lombok.ToString;
@@ -8,7 +9,6 @@ import lombok.ToString;
 import java.io.IOException;
 import java.util.Arrays;
 import java.util.Collections;
-
 
 
 @ToString
@@ -19,7 +19,7 @@ public class Deck {
     private String[] ranks = {"A", "K", "Q", "J", "10", "9", "8", "7", "6", "5", "4", "3", "2"};
     private String[] colors = {"♥", "♠", "♦", "♣"};
 
-    public Deck() {
+    public Deck(String pokerOrBJ) {
         int k = 0;
         for (int j = 0; j < 4; j++) {
             for (int i = 0; i < 13; i++) {
@@ -29,7 +29,10 @@ public class Deck {
                 String fileName = new String( ranks[i].toString() + colors[j].toString() + ".png");
                 //System.out.println(fileName);
                 cards[k].setImage(fileName);
-                cards[k].setValue();
+                if(pokerOrBJ.equals("bj"))
+                    cards[k].setValue();
+                else
+                    cards[k].setValuePoker();
                 k++;
             }
         }

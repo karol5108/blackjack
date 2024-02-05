@@ -42,6 +42,7 @@ public class SecurityConfig {
                         .requestMatchers("/loginGithub").permitAll()
                         .requestMatchers("/register").permitAll()
                         .requestMatchers("/").permitAll()
+                        .requestMatchers("/modal").permitAll()
                         /// permits for templates
                         .requestMatchers("/style.css").permitAll()
                         .requestMatchers("/tittle.png").permitAll()

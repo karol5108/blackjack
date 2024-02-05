@@ -139,31 +139,38 @@
 
 /* tittle page styles */
 
+.tittle-body {
+    position: relative;
+    margin-top: 75px;
+    min-height: 100vh;
+    background: url('bj.png');
+    background-size: cover;
+    background-position: bottom;
+    background-repeat: no-repeat;
+    overflow: hidden; /* Ukrycie przewijania */
+     display: flex;
+        flex-direction: column; /* Ustawienie kierunku flexa na kolumnę */
+        align-items: center; /
+}
 
-.tittle-body{
-    flex-direction: column;
-         display: flex;
-         justify-content: left;
-         align-items: left;
-         margin-top: 75px;
-         margin-left:25px;
-         min-height: 100vh;
-         max-height: 100vh;
-         background: url('bj.png');
-         background-size: cover;
-         background-position: bottom ;
-         background-repeat: no-repeat;
-         color: #fff;
-         -webkit-text-stroke: 0.2px black;
-         text-shadow: -1px 1px 20px rgba(0, 0, 0, 1);
-         height: 100%;
+.tittle-content {
+    width: 50%;
+    position: absolute;
+    top: 0;
+    bottom: 0;
+    color: #fff;
 }
-.tittle-content{
-   width: 1200px;
-   color: #fff;
-   position: relative;
-   padding-left:25px;
+
+.tittle-content:nth-child(2) {
+    left: 30px;
+    text-align: left;
 }
+
+.tittle-content:nth-child(3) {
+    right: 30px;
+    text-align: right;
+}
+
 .tittle-content .tittle-p{
     font-family: "Marhey";
     letter-spacing: 1.2 px;
@@ -303,8 +310,8 @@
     color: #fff;
     font-weight: 500;
     text-decoration: none;
-    margin-left: 40px;
-    margin-right: 40px;
+    margin-left: 30px;
+    margin-right: 30px;
 }
 .navbar a::before{
     content:'';

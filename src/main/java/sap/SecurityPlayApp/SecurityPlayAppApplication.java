@@ -20,7 +20,7 @@ public class SecurityPlayAppApplication {
 	public static void main(String[] args) {
 		SpringApplication.run(SecurityPlayAppApplication.class, args);
 
-			Deck deck = new Deck();
+			Deck deck = new Deck("bj");
 			PlayerBJ player = new PlayerBJ();
 			PlayerBJ hustler = new PlayerBJ();
 
