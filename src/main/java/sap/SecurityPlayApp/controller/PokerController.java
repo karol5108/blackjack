@@ -22,10 +22,10 @@ public class PokerController {
         deck = new Deck("poker");
         playerP = new PlayerP();
         playerP.setName("player");
-        playerP.setCredits(150);
+        playerP.setCredits(1000);
         huslterP = new PlayerP();
         huslterP.setName("hustler");
-        huslterP.setCredits(150);
+        huslterP.setCredits(1000);
 
         poker = new Poker();
         poker.setDeck(deck);

@@ -16,10 +16,10 @@ import java.util.concurrent.TimeUnit;
 @NoArgsConstructor
 @Getter
 @Setter
-public class Poker{
+public class Poker {
     private Deck deck;
     private int moneyOnTable;
-    private int whoFirst=1;
+    private int whoFirst = 1;
     // 1 - hustler first ; 2 - player first
     private int currentBetPlayer;
     private int currentBetHustler;
@@ -34,7 +34,7 @@ public class Poker{
     private boolean gameFinished;
     private String winner;
 
-    public void startGame(){
+    public void startGame() {
 
         deck.shuffle();
         System.out.println("!! new game started !!");
@@ -42,7 +42,7 @@ public class Poker{
         moneyOnTable = 0;
         gameFinished = false;
         winner = null;
-        if (whoFirst == 1){
+        if (whoFirst == 1) {
             currentBetPlayer = 2;
             currentBetHustler = 5;
             player.setCredits(player.getCredits() - currentBetPlayer);
@@ -78,7 +78,7 @@ public class Poker{
 
             moneyOnTable = currentBetPlayer + currentBetHustler;
         }
-        if (whoFirst == 2){
+        if (whoFirst == 2) {
             currentBetPlayer = 5;
             player.setMoveDone(true);
             hustler.setMoveDone(false);
@@ -106,13 +106,14 @@ public class Poker{
             System.out.println(player.getCardsInHand());
             System.out.println(hustler.getCardsInHand());
             moneyOnTable = currentBetPlayer + currentBetHustler;
-            this.checkHustler();
+            this.moveHustler();
         }
         System.out.println(" current credits player:  " + player.getCredits() +
                 "\n current credits hustler: " + hustler.getCredits());
         System.out.println("money on table start new game: " + moneyOnTable);
     }
-    public void checkHustler(){
+
+    public void moveHustler() {
 
         HandEvaluator currentCardsHustler = new HandEvaluator();
         currentCardsHustler.setPlayerToCheckHandValue(hustler);
@@ -134,50 +135,183 @@ public class Poker{
 
         int toCheck = currentBetPlayer - currentBetHustler;
 
-        ///do zmiany warunki handValue dla testu na razie 1 dla wszystkich
-        if (handValue >= 1){
-            if (currentBetPlayer > 0){
-                if (((i > 5) || (currentCardsHustler.getHighCard().getValue() > 8)) && (currentBetPlayer <= (hustler.getCredits() / 5))) {
-                    /// hustler check to player bet
-                    hustler.setCredits(hustler.getCredits() - toCheck);
-                    moneyOnTable += toCheck;
-                    currentBetHustler = currentBetPlayer;
-                    hustler.setMoveDone(true);
-                    System.out.println("hustler bet : " + this.getCurrentBetHustler() + hustler.isMoveDone());
-                    System.out.println("player bet : " + this.getCurrentBetPlayer() + player.isMoveDone());
-                    if (player.getCurrentBet() == hustler.getCurrentBet()) {
-                        this.nextCardOnTable();
+        // hustler ai - BEFORE FLOP
+        if (cardsOnTable.size() == 0) {
+            /// MOVES WITH "HIGH CARD"
+            if (handValue == 1) {
+                if (currentCardsHustler.getHighCard().getValue() == 14) {
+                    /// hustler rise 10/20/30
+                    int decRise = random.nextInt(3);
+                    int bet = 0;
+                    if (decRise == 0) {
+                        bet = 10;
+                    } else if (decRise == 1) {
+                        bet = 20;
+                    } else {
+                        bet = 30;
                     }
-                }else {
-                    // hustler fold
-                    this.hustlerFold();
-                    this.gameFinished=true;
+                    betHustler(bet);
+                    return;
                 }
-
-            }else {
-                if ((i > 5) && (currentCardsHustler.getHighCard().getValue() > 8)) {
-                    /// hustler rise +10
-                    hustler.setCredits(hustler.getCredits() - 10);
-                    moneyOnTable += 10;
-                    currentBetHustler = 10;
-                    hustler.setMoveDone(true);
-                    player.setMoveDone(false);
-                    System.out.println("hustler bet : " + this.getCurrentBetHustler() + hustler.isMoveDone());
-                    System.out.println("player bet : " + this.getCurrentBetPlayer() + player.isMoveDone());
-                    if (player.getCurrentBet() == hustler.getCurrentBet()) {
-                        nextCardOnTable();
+                if (currentCardsHustler.getHighCard().getValue() > 10) {
+                    /// hustler rise 10/20
+                    int decRise = random.nextInt(2);
+                    int bet = 0;
+                    if (decRise == 0) {
+                        bet = 10;
+                    } else {
+                        bet = 20;
                     }
-                }else {
-                    /// hustler check 0
-                    hustler.setMoveDone(true);
-                    System.out.println("hustler check 0");
-                    if (player.getCurrentBet() == hustler.getCurrentBet())
-                        nextCardOnTable();
+                    betHustler(bet);
+                    return;
+                }
+                if ((hustler.getCardsInHand().get(0).getValue() - hustler.getCardsInHand().get(1).getValue() == 1 ||
+                        hustler.getCardsInHand().get(0).getValue() - hustler.getCardsInHand().get(1).getValue() == -1) &&
+                                hustler.getCardsInHand().get(0).getColor().equals(hustler.getCardsInHand().get(1).getColor())) {
+                    /// hustler rise 10/20
+                    int decRise = random.nextInt(2);
+                    int bet = 0;
+                    if (decRise == 0) {
+                        bet = 10;
+                    } else {
+                        bet = 20;
+                    }
+                    betHustler(bet);
+                    return;
+                }
+                if (hustler.getCardsInHand().get(0).getValue() - hustler.getCardsInHand().get(1).getValue() == 1 ||
+                        hustler.getCardsInHand().get(0).getValue() - hustler.getCardsInHand().get(1).getValue() == -1 ||
+                        hustler.getCardsInHand().get(0).getColor().equals(hustler.getCardsInHand().get(1).getColor())) {
+                    if (currentBetPlayer > 0) {
+                        if (currentBetPlayer < 10) {
+                            checkHustler();
+                        } else {
+                            hustlerFold();
+                        }
+                    } else {
+                        betHustler(5);
+                    }
+                    return;
+                }
+                if (currentBetPlayer > 5) {
+                    hustlerFold();
+                    return;
+                } else {
+                    checkHustler();
+                    return;
                 }
             }
-            return;
+            if (handValue == 2) {
+                ///hustler rise 10/20/30
+                int decRise = random.nextInt(3);
+                int bet = 0;
+                if (decRise == 0) {
+                    bet = 10;
+                } else if (decRise == 1) {
+                    bet = 20;
+                } else {
+                    bet = 30;
+                }
+                betHustler(bet);
+                return;
+            }
         }
+        /// hustler ai - AFTER FLOP
+        if (cardsOnTable.size() > 0) {
+            if (handValue > 6) {
+                /// hustler rise 30/40/50
+                int decRise = random.nextInt(4);
+                int bet = 0;
+                if (decRise == 0) {
+                    bet = 30;
+                } else if (decRise == 1) {
+                    bet = 40;
+                } else if (decRise == 2) {
+                    bet = 50;
+                } else {
+                    checkHustler();
+                    return;
+                }
+                betHustler(bet);
+                return;
+            }
+            if (handValue > 4) {
+                /// hustler rise 30/40/50
+                int decRise = random.nextInt(4);
+                int bet = 0;
+                if (decRise == 0) {
+                    bet = 10;
+                } else if (decRise == 1) {
+                    bet = 20;
+                } else if (decRise == 2) {
+                    bet = 30;
+                } else {
+                    checkHustler();
+                    return;
+                }
+                betHustler(bet);
+                return;
+            }
+            if (handValue > 2) {
+                if (currentBetPlayer > 0) {
+                    if (currentBetPlayer > 30) {
+                        hustlerFold();
+                        return;
+                    } else {
+                        checkHustler();
+                        return;
+                    }
+                } else {
+                    /// hustler rise 10/20
+                    int decRise = random.nextInt(2);
+                    int bet = 0;
+                    if (decRise == 0) {
+                        bet = 10;
+                    } else {
+                        bet = 20;
+                    }
+                    betHustler(bet);
+                    return;
+                }
+            }
+            if (handValue == 2) {
+                if (currentBetPlayer > 0) {
+                    if (currentBetPlayer > 15) {
+                        hustlerFold();
+                        return;
+                    } else {
+                        checkHustler();
+                        return;
+                    }
+                } else {
+                    /// hustler rise 10 or check
+                    int decRise = random.nextInt(2);
+                    int bet = 0;
+                    if (decRise == 0) {
+                        bet = 10;
+                    } else {
+                        checkHustler();
+                        return;
+                    }
+                    betHustler(bet);
+                    return;
+                }
+            }
+            if (handValue == 1) {
+                if (currentBetPlayer > 0) {
+                    if (currentBetPlayer > 10) {
+                        hustlerFold();
+                    } else {
+                        checkHustler();
+                    }
+                }else {
+                    checkHustler();
+                }
+            }
+        }
+
     }
+
     public void nextCardOnTable() {
         System.out.println(" current credits player:  " + player.getCredits() +
                 "\n current credits hustler: " + hustler.getCredits());
@@ -194,12 +328,12 @@ public class Poker{
                 System.out.println(cardsOnTable);
                 player.setMoveDone(false);
                 hustler.setMoveDone(false);
-               // moneyOnTable += currentBetPlayer + currentBetHustler;
+                // moneyOnTable += currentBetPlayer + currentBetHustler;
                 currentBetPlayer = 0;
                 currentBetHustler = 0;
                 System.out.println("Current stake: " + moneyOnTable);
-                if (whoFirst == 1){
-                    checkHustler();
+                if (whoFirst == 1) {
+                    moveHustler();
                 }
             } else {
                 if (cardsOnTable.size() < 5) {
@@ -212,8 +346,8 @@ public class Poker{
                     currentBetPlayer = 0;
                     currentBetHustler = 0;
                     System.out.println("Current stake: " + moneyOnTable);
-                    if (whoFirst == 1){
-                        checkHustler();
+                    if (whoFirst == 1) {
+                        moveHustler();
                     }
 
                 } else {
@@ -229,64 +363,110 @@ public class Poker{
                 System.out.println("hustler move !");
         }
     }
-    public void newGame(){
-        if (whoFirst == 1){
+
+    public void newGame() {
+        if (whoFirst == 1) {
             whoFirst = 2;
-        }else {
+        } else {
             whoFirst = 1;
         }
         this.startGame();
     }
-    public void hustlerFold(){
+
+    public void hustlerFold() {
         System.out.println(player.getCredits());
         this.player.setCredits(player.getCredits() + moneyOnTable);
         winner = "player";
+        playerHand = new HandEvaluator();
+        playerHand.setPlayerToCheckHandValue(player);
+        playerHand.setCardsTable(cardsOnTable);
+        playerHand.checkHandPlayer();
+        gameFinished = true;
         System.out.println("hustler fold " +
-                            "\n player win : " + moneyOnTable +
-                                "\n current credits player:  " + player.getCredits() +
-                                    "\n current credits hustler: " + hustler.getCredits());
+                "\n player win : " + moneyOnTable +
+                "\n current credits player:  " + player.getCredits() +
+                "\n current credits hustler: " + hustler.getCredits());
 
     }
-    public void playerFold(){
+
+    public void playerFold() {
         this.hustler.setCredits(hustler.getCredits() + moneyOnTable);
         winner = "hustler";
+        hustlerHand = new HandEvaluator();
+        hustlerHand.setPlayerToCheckHandValue(hustler);
+        hustlerHand.setCardsTable(cardsOnTable);
+        hustlerHand.checkHandPlayer();
+        gameFinished = true;
         System.out.println("player fold " +
                 "\n hustler win : " + moneyOnTable +
                 "\n current credits player:  " + player.getCredits() +
                 "\n current credits hustler: " + hustler.getCredits());
 
     }
-    public void checkPlayer(){
-        if (currentBetHustler > 0){
+
+    public void checkPlayer() {
+        if (currentBetHustler > 0) {
             betPlayer(currentBetHustler - currentBetPlayer);
-        }else {
+        } else {
             player.setMoveDone(true);
             System.out.println("player check 0");
-            if (!hustler.isMoveDone()){
-                checkHustler();
+            if (!hustler.isMoveDone()) {
+                moveHustler();
             }
             nextCardOnTable();
         }
     }
-    public void betPlayer(int bet){
-        if (bet <= player.getCredits() && (bet+currentBetPlayer) >= currentBetHustler){
+
+    public void checkHustler() {
+        if (currentBetPlayer > 0) {
+            betHustler(currentBetPlayer - currentBetHustler);
+        } else {
+            hustler.setMoveDone(true);
+            System.out.println("hustler check 0");
+            if (player.isMoveDone()) {
+                nextCardOnTable();
+            }
+        }
+    }
+
+    public void betPlayer(int bet) {
+        if (bet <= player.getCredits() && (bet + currentBetPlayer) >= currentBetHustler) {
             player.setCredits(player.getCredits() - bet);
             moneyOnTable += bet;
             currentBetPlayer += bet;
             System.out.println(player.getName() + " bet : " + currentBetPlayer);
             player.setMoveDone(true);
-            if (currentBetPlayer > currentBetHustler){
+            if (currentBetPlayer > currentBetHustler) {
                 hustler.setMoveDone(false);
-                checkHustler();
-            }else {
+                moveHustler();
+            } else {
                 nextCardOnTable();
             }
 
-        }else {
-            System.out.println( "not enough balance to bet");
+        } else {
+            System.out.println("not enough balance to bet");
         }
     }
-    public void checkTable(){
+
+    public void betHustler(int bet) {
+        if (bet <= hustler.getCredits() && (bet + currentBetHustler) >= currentBetPlayer) {
+            hustler.setCredits(hustler.getCredits() - bet);
+            moneyOnTable += bet;
+            currentBetHustler += bet;
+            System.out.println(hustler.getName() + " bet : " + currentBetHustler);
+            hustler.setMoveDone(true);
+            if (currentBetPlayer < currentBetHustler) {
+                player.setMoveDone(false);
+            } else {
+                nextCardOnTable();
+            }
+
+        } else {
+            System.out.println("not enough balance to bet");
+        }
+    }
+
+    public void checkTable() {
         if (cardsOnTable.size() == 5 && hustler.isMoveDone() && player.isMoveDone()) {
             playerHand = new HandEvaluator();
             playerHand.setPlayerToCheckHandValue(player);
@@ -339,7 +519,7 @@ public class Poker{
                     } else {
 
                         winner = "draw";
-                        int halfWin = moneyOnTable/2;
+                        int halfWin = moneyOnTable / 2;
                         this.player.setCredits(player.getCredits() + halfWin);
                         this.hustler.setCredits(hustler.getCredits() + halfWin);
                         System.out.println("same hand:  " +
@@ -362,13 +542,13 @@ public class Poker{
                         winner = "player";
                         this.player.setCredits(player.getCredits() + moneyOnTable);
                         winner = "player";
-                        System.out.println("hplayer better hand:  " +
+                        System.out.println("player better hand:  " +
                                 "\n player win : " + moneyOnTable +
                                 "\n current credits player:  " + player.getCredits() +
                                 "\n current credits hustler: " + hustler.getCredits());
                     } else {
                         winner = "draw";
-                        int halfWin = moneyOnTable/2;
+                        int halfWin = moneyOnTable / 2;
                         this.player.setCredits(player.getCredits() + halfWin);
                         this.hustler.setCredits(hustler.getCredits() + halfWin);
                         System.out.println("same hand:  " +
