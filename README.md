@@ -36,7 +36,7 @@ Aby zbudować i uruchomić aplikację lokalnie, postępuj zgodnie z poniższymi 
     - za pomocą Oauth2 - konto GitHub
     ![img_1.png](img_1.png)
   - Formularz rejestracji
-  ![img_2.png](img_2.png)
+    ![img_2.png](img_2.png)
 
 - **Dla zalogowanych użytkowników:**
   - rozgrywka w Black Jack
