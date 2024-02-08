@@ -13,29 +13,71 @@
 <div th:insert="~{/navbar :: navbar}"></div>
 <!--</body>-->
 <!--<body class="body-poker">-->
-<div class="game-section-poker">
+<script>
+<!--    // Funkcja do zwiększania zakładu-->
+<!--    function increaseBet() {-->
+<!--        var inputElement = document.getElementById('customBet');-->
+<!--        var currentBet = parseInt(inputElement.value);-->
+<!--        var maxBet = parseInt(inputElement.getAttribute('max'));-->
 
-    <div class="poker-player-section">
-        <h2> HUSTLER: </h2>
-        <h1 th:text="'Bet: ' + ${betHustler}"></h1>
+<!--        if (currentBet < maxBet) {-->
+<!--            inputElement.value = currentBet + 1;-->
+<!--        }-->
+<!--    }-->
 
-        <div class="poker-cards-player">
-            <div th:if="${!gameFinished}"
-                 th:each="card, stat : ${hustlerCards}" class="card-poker">
-                <img th:src="back.png" alt="Card Image"
-                     class="card-image"/>
-            </div>
-            <div    th:if="${gameFinished}"
-                    th:each="card, stat : ${hustlerCards}" class="card-poker">
-                <img th:src="@{/__${card.image}__}" alt="Card Image"
-                     class="card-image"/>
-            </div>
+<!--    // Funkcja do zmniejszania zakładu-->
+<!--    function decreaseBet() {-->
+<!--        var inputElement = document.getElementById('customBet');-->
+<!--        var currentBet = parseInt(inputElement.value);-->
+<!--        var minBet = parseInt(inputElement.getAttribute('min'));-->
+
+<!--        if (currentBet > minBet) {-->
+<!--            inputElement.value = currentBet - 1;-->
+<!--        }-->
+<!--    }-->
+</script>
+
+
+
+<div class="poker-player-section">
+    <h2> PLAYER: </h2>
+    <h1 th:text="'Bet: ' + ${betPlayer}"></h1>
+
+    <div class="poker-cards-player">
+        <div th:each="card, stat : ${playerCards}" class="card-poker">
+            <img th:src="@{/__${card.image}__}" alt="Card Image" class="card-image"/>
         </div>
-        <h1 th:text="'Credits: ' + ${creditsHustler}"></h1>
     </div>
+    <h1 th:text="'Credits: ' + ${creditsPlayer}"></h1>
+</div>
 
 </div>
+<div class="game-section-poker">
+    <div class="poker-controls">
+        <form th:action="@{/check}" method="get">
+            <button class="button green" button type="submit"> CHECK</button>
+        </form>
+        <form th:action="@{/rise}" method="get">
+            <button class="button red" type="submit"> RISE +10</button>
+        </form>
+        <form th:action="@{/riseX2}" method="get">
+            <button class="button white" type="submit"> RISE X2 </button>
+        </form>
+        <form th:action="@{/riseCustom}" method="get">
+            <div class="input-group">
+                <input type="number" name="customBet" id="customBet" class="form-control" min="${currentBetHustler}" max="100" th:value="${currentBetHustler}" />
+            </div>
+
+            <!-- Przycisk do potwierdzenia zakładu -->
+            <button class="button white" type="submit">Rise Custom Bet</button>
+        </form>
+        <form th:action="@{/fold}" method="get">
+            <button class="button white" type="submit"> FOLD</button>
+        </form>
+    </div>
 </div>
+
+
 
 <div class="poker-player-section">
 
@@ -72,67 +114,26 @@
     <h1 th:text="'Pot: ' + ${moneyOnTable}"></h1>
 </div>
 
-<div class="poker-controls">
-    <form th:action="@{/check}" method="get">
-        <button class="button green" button type="submit"> CHECK</button>
-    </form>
-    <form th:action="@{/rise}" method="get">
-        <button class="button red" type="submit"> RISE +10</button>
-    </form>
-    <form th:action="@{/riseX2}" method="get">
-        <button class="button white" type="submit"> RISE X2 </button>
-    </form>
-    <form th:action="@{/riseCustom}" method="get">
-        <div class="input-group">
-            <input type="number" name="customBet" id="customBet" class="form-control" min="${currentBetHustler}" max="100" th:value="${currentBetHustler}" />
-        </div>
-
-        <!-- Przycisk do potwierdzenia zakładu -->
-        <button class="button white" type="submit">Rise Custom Bet</button>
-    </form>
-    <form th:action="@{/fold}" method="get">
-        <button class="button white" type="submit"> FOLD</button>
-    </form>
-
-    <script>
-    // Funkcja do zwiększania zakładu
-    function increaseBet() {
-        var inputElement = document.getElementById('customBet');
-        var currentBet = parseInt(inputElement.value);
-        var maxBet = parseInt(inputElement.getAttribute('max'));
-
-        if (currentBet < maxBet) {
-            inputElement.value = currentBet + 1;
-        }
-    }
-
-    // Funkcja do zmniejszania zakładu
-    function decreaseBet() {
-        var inputElement = document.getElementById('customBet');
-        var currentBet = parseInt(inputElement.value);
-        var minBet = parseInt(inputElement.getAttribute('min'));
-
-        if (currentBet > minBet) {
-            inputElement.value = currentBet - 1;
-        }
-    }
-</script>
-
-</div>
-</div>
-
 <div class="poker-player-section">
-    <h2> PLAYER: </h2>
-    <h1 th:text="'Bet: ' + ${betPlayer}"></h1>
+    <h2> HUSTLER: </h2>
+    <h1 th:text="'Bet: ' + ${betHustler}"></h1>
 
     <div class="poker-cards-player">
-        <div th:each="card, stat : ${playerCards}" class="card-poker">
-            <img th:src="@{/__${card.image}__}" alt="Card Image" class="card-image"/>
+        <div th:if="${!gameFinished}"
+             th:each="card, stat : ${hustlerCards}" class="card-poker">
+            <img th:src="back.png" alt="Card Image"
+                 class="card-image"/>
+        </div>
+        <div    th:if="${gameFinished}"
+                th:each="card, stat : ${hustlerCards}" class="card-poker">
+            <img th:src="@{/__${card.image}__}" alt="Card Image"
+                 class="card-image"/>
         </div>
     </div>
-    <h1 th:text="'Credits: ' + ${creditsPlayer}"></h1>
+    <h1 th:text="'Credits: ' + ${creditsHustler}"></h1>
 </div>
 
+</div>
 </div>
 
 <div class="container mt-5">

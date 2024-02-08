@@ -34,15 +34,15 @@ Aby zbudować i uruchomić aplikację lokalnie, postępuj zgodnie z poniższymi 
   - Formularz logowania 
     - za pomocą 'lokalnego' użytkownika z danymi przechowywanymi w bazie danych
     - za pomocą Oauth2 - konto GitHub
-    ![img_1.png](img_1.png)
+   - ![img_1.png](img_1.png)
   - Formularz rejestracji
-    ![img_2.png](img_2.png)
+  - ![img_2.png](img_2.png)
 
 - **Dla zalogowanych użytkowników:**
   - rozgrywka w Black Jack
-  ![img_3.png](img_3.png)
+  - ![img_3.png](img_3.png)
   - rozgrywka w Pokera
-  ![img_4.png](img_4.png)
+  - ![img_4.png](img_4.png)
   - wylogowanie
    
 ## Autor

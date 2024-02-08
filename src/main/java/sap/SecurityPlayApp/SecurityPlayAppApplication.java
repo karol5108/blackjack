@@ -19,24 +19,6 @@ public class SecurityPlayAppApplication {
 
 	public static void main(String[] args) {
 		SpringApplication.run(SecurityPlayAppApplication.class, args);
-
-			Deck deck = new Deck("bj");
-			PlayerBJ player = new PlayerBJ();
-			PlayerBJ hustler = new PlayerBJ();
-
-			BlackJack blackJack = new BlackJack();
-			blackJack.setDeck(deck);
-			blackJack.setPlayer(player);
-			blackJack.setHustler(hustler);
-
-			blackJack.startGame();
-			blackJack.getOne();
-			blackJack.getOneHustler();
-			System.out.println( blackJack.checkWinner());
-
-
-
-
 	}
 
 	@Bean

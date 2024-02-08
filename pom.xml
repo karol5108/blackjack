@@ -64,7 +64,7 @@
 			<artifactId>bootstrap</artifactId>
 			<version>4.5.0</version>
 		</dependency>
-		
+
 
 	</dependencies>
 
@@ -80,6 +80,26 @@
 							<artifactId>lombok</artifactId>
 						</exclude>
 					</excludes>
+				</configuration>
+			</plugin>
+			<plugin>
+				<groupId>com.spotify</groupId>
+				<artifactId>dockerfile-maven-plugin</artifactId>
+				<version>1.4.13</version> <!-- Użyj najnowszej wersji dostępnej na chwilę obecną -->
+				<executions>
+					<execution>
+						<id>default</id>
+						<goals>
+							<goal>build</goal>
+						</goals>
+					</execution>
+				</executions>
+				<configuration>
+					<repository>your-docker-image-name</repository>
+					<tag>latest</tag>
+					<buildArgs>
+						<JAR_FILE>target/SecurityPlayApp-0.0.1-SNAPSHOT.jar</JAR_FILE>
+					</buildArgs>
 				</configuration>
 			</plugin>
 		</plugins>

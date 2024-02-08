@@ -254,7 +254,7 @@ public class Poker {
             }
             if (handValue > 2) {
                 if (currentBetPlayer > 0) {
-                    if (currentBetPlayer > 30) {
+                    if (currentBetPlayer > 40) {
                         hustlerFold();
                         return;
                     } else {
@@ -276,7 +276,7 @@ public class Poker {
             }
             if (handValue == 2) {
                 if (currentBetPlayer > 0) {
-                    if (currentBetPlayer > 15) {
+                    if (currentBetPlayer > 20) {
                         hustlerFold();
                         return;
                     } else {
@@ -379,7 +379,14 @@ public class Poker {
         winner = "player";
         playerHand = new HandEvaluator();
         playerHand.setPlayerToCheckHandValue(player);
-        playerHand.setCardsTable(cardsOnTable);
+        if (cardsOnTable.size() < 1) {
+            Card joker = new Card(0, "joker", "joker", "none");
+            List<Card> noCardsOnTable = new ArrayList<>();
+            noCardsOnTable.add(joker);
+            playerHand.setCardsTable(noCardsOnTable);
+        } else {
+            playerHand.setCardsTable(cardsOnTable);
+        }
         playerHand.checkHandPlayer();
         gameFinished = true;
         System.out.println("hustler fold " +
@@ -394,7 +401,14 @@ public class Poker {
         winner = "hustler";
         hustlerHand = new HandEvaluator();
         hustlerHand.setPlayerToCheckHandValue(hustler);
-        hustlerHand.setCardsTable(cardsOnTable);
+        if (cardsOnTable.size() < 1) {
+            Card joker = new Card(0, "joker", "joker", "none");
+            List<Card> noCardsOnTable = new ArrayList<>();
+            noCardsOnTable.add(joker);
+           hustlerHand.setCardsTable(noCardsOnTable);
+        } else {
+            hustlerHand.setCardsTable(cardsOnTable);
+        }
         hustlerHand.checkHandPlayer();
         gameFinished = true;
         System.out.println("player fold " +

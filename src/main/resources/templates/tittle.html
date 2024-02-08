@@ -11,6 +11,23 @@
 <body>
 <div th:insert="~{/navbar :: navbar}"></div>
 </body>
+<body class="navbar-body">
+<header class="header" th:fragment="navbar">
+    <img class="navbar-logo" th:src="@{/logo.png}"/>
+    <nav class="navbar">
+        <a th:href="@{/}">HOME</a>
+        <!-- Sprawdź, czy loggedIn nie jest nullem i czy jest fałszywe -->
+        <a th:if="${loggedIn == null or not loggedIn}" th:href="@{/login}">LOGIN</a>
+        <a th:if="${loggedIn == null or not loggedIn}" th:href="@{/}">REGISTER</a>
+
+        <!-- Sprawdź, czy loggedIn nie jest nullem i czy jest prawdziwe -->
+        <a th:if="${loggedIn != null and loggedIn}" th:href="@{/start}">START BLACKJACK</a>
+        <a th:if="${loggedIn != null and loggedIn}" th:href="@{/start-poker}">START POKER</a>
+        <a th:if="${loggedIn != null and loggedIn}" th:href="@{/logout}">LOGOUT</a>
+
+    </nav>
+</header>
+</body>
 <body CLASS="tittle-body">
 
     <div class="tittle-content">

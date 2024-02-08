@@ -17,20 +17,24 @@ public class PokerController {
     private PlayerP huslterP;
     private Poker poker;
 
+
     @GetMapping("/start-poker")
     public String startPoker(Model model) {
-        deck = new Deck("poker");
-        playerP = new PlayerP();
-        playerP.setName("player");
-        playerP.setCredits(1000);
-        huslterP = new PlayerP();
-        huslterP.setName("hustler");
-        huslterP.setCredits(1000);
+        if (deck==null || playerP == null || huslterP == null || poker == null){
+            deck = new Deck("poker");
+            playerP = new PlayerP();
+            playerP.setName("player");
+            playerP.setCredits(1000);
+            huslterP = new PlayerP();
+            huslterP.setName("hustler");
+            huslterP.setCredits(1000);
 
-        poker = new Poker();
-        poker.setDeck(deck);
-        poker.setPlayer(playerP);
-        poker.setHustler(huslterP);
+            poker = new Poker();
+            poker.setDeck(deck);
+            poker.setPlayer(playerP);
+            poker.setHustler(huslterP);
+
+        }
         poker.startGame();
 
         if (poker.isGameFinished()){
